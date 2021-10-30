@@ -1,17 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpCode, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 
-@Controller('ab*cd')
+@Controller('kakao')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get('/')
+  @HttpCode(200)
   getHello(): string {
     return this.appService.getHello();
-  }
-
-  @Get('/test')
-  getTest(): string {
-    return 'hello test';
   }
 }
