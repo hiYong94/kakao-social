@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entities/User';
 import { Repository } from 'typeorm';
+import { CreateUserDto } from '../dto/CreateUserDto';
+import User from '../entities/User';
 
 @Injectable()
 export class UserService {
@@ -14,11 +15,18 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  findOne(id: string): Promise<User> {
-    return this.userRepository.findOne(id);
+  async create(createUserDto: CreateUserDto): Promise<boolean> {
+    const { name } = createUserDto;
+
+    const newUser = new User();
+    newUser.name = name;
+    await this.userRepository.save(newUser);
+
+    return true;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string): Promise<boolean> {
     await this.userRepository.delete(id);
+    return true;
   }
 }
