@@ -16,10 +16,10 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<boolean> {
-    const { name } = createUserDto;
+    const { nickName } = createUserDto;
 
     const newUser = new User();
-    newUser.name = name;
+    newUser.nickName = nickName;
     await this.userRepository.save(newUser);
 
     return true;

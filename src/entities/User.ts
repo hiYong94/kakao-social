@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('users')
 class User {
@@ -6,22 +14,36 @@ class User {
   id: number;
 
   @Column({
-    comment: '이름',
-    name: 'name',
+    name: 'nick_name',
     type: 'varchar',
-    length: 45,
-    nullable: false,
+    length: 30,
   })
-  name: string;
+  nickName: string;
 
-  @Column({
-    comment: '활성상태',
-    name: 'is_active',
-    type: 'boolean',
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
     nullable: false,
-    default: true,
   })
-  isActive: boolean;
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp',
+    nullable: false,
+  })
+  updatedAt: Date;
+
+  @BeforeInsert()
+  beforeInsert() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
+
+  @BeforeUpdate()
+  beforeUpdate() {
+    this.updatedAt = new Date();
+  }
 }
 
 export default User;
