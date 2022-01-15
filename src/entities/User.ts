@@ -1,18 +1,8 @@
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, DeleteDateColumn, Entity } from 'typeorm';
+import { BaseEntityClass } from './BaseEntityClass';
 
 @Entity('users')
-class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+class User extends BaseEntityClass {
   @Column({
     name: 'nick_name',
     type: 'varchar',
@@ -20,30 +10,13 @@ class User {
   })
   nickName: string;
 
-  @CreateDateColumn({
-    name: 'created_at',
+  @DeleteDateColumn({
+    name: 'deleted_at',
     type: 'timestamp',
-    nullable: false,
+    precision: 0,
+    comment: '삭제일(soft)',
   })
-  createdAt: Date;
-
-  @UpdateDateColumn({
-    name: 'updated_at',
-    type: 'timestamp',
-    nullable: false,
-  })
-  updatedAt: Date;
-
-  @BeforeInsert()
-  beforeInsert() {
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
-  }
-
-  @BeforeUpdate()
-  beforeUpdate() {
-    this.updatedAt = new Date();
-  }
+  deletedAt: Date | null;
 }
 
 export default User;
