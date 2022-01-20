@@ -7,11 +7,27 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../modules/auth/jwt.guard';
 import { KakaoAuthGuard } from '../modules/auth/kakao.guard';
+import { LocalAuthGuard } from '../modules/auth/local.guard';
+import { AuthService } from '../service/Auth.Service';
 
 @Controller('auth')
 export class AuthController {
-  // constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
+
+  @UseGuards(LocalAuthGuard)
+  @Post('/login')
+  async login(@Request() req) {
+    return this.authService.login(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/profile')
+  async getProfile() {
+    console.log('#!');
+  }
+
   @Get('/')
   @UseGuards(KakaoAuthGuard)
   async kakaoAuth(@Req() req) {

@@ -11,8 +11,16 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  findAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     return this.userRepository.find();
+  }
+
+  async findOne(nickName: string): Promise<User> {
+    return this.userRepository.findOneOrFail({
+      where: {
+        nickName,
+      },
+    });
   }
 
   async create(createUserDto: CreateUserDto): Promise<boolean> {
